@@ -33,11 +33,12 @@
         android:onClick="onArticleSearch"/>
 
     <GridView
+        android:id="@+id/gdResults"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/etSearch"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="11dp"
-        android:id="@+id/gdResults"/>
+        android:numColumns="4" />
 
 </RelativeLayout>

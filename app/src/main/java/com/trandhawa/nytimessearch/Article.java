@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by trandhawa on 9/24/17.
  */
@@ -11,6 +13,19 @@ import org.json.JSONObject;
 public class Article {
 
     String webUrl;
+
+    public String getWebUrl() {
+        return webUrl;
+    }
+
+    public String getHeadline() {
+        return headline;
+    }
+
+    public String getThumbNail() {
+        return thumbNail;
+    }
+
     String headline;
     String thumbNail;
     private static String NYTIMES_URL = "http://www.nytimes.com/";
@@ -30,5 +45,20 @@ public class Article {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<Article> fromJsonArray(JSONArray array){
+
+        ArrayList<Article> results = new ArrayList<Article>();
+
+        for(int i=0; i<array.length(); i++){
+            try{
+                results.add(new Article(array.getJSONObject(i)));
+            } catch(JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        return results;
     }
 }
