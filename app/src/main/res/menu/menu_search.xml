@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.trandhawa.nytimessearch.activities.SearchActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_filter"
+        android:title="@string/filter_menu_label"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/filter_icon"
+        android:onClick="onFilter"/>
 </menu>

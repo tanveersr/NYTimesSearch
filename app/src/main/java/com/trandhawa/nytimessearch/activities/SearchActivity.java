@@ -91,7 +91,7 @@ public class SearchActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_filter) {
             return true;
         }
 
@@ -101,8 +101,6 @@ public class SearchActivity extends AppCompatActivity {
     public void onArticleSearch(View view) {
 
         String query = etQuery.getText().toString();
-
-//        Toast.makeText(this, "Searching for " + query, Toast.LENGTH_LONG).show();
 
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
@@ -132,5 +130,54 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
+    }
+
+    public void onFilter(MenuItem item) {
+
+        Intent filterIntent = new Intent(this, FilterActivity.class);
+        startActivityForResult(filterIntent, 1);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String beginDate = data.getStringExtra("beginDate");
+                String sortOrder = data.getStringExtra("sortOrder");
+                String newsDesk = data.getStringExtra("newsDesk");
+                Log.d("DEBUG" , "BeginDate: " + beginDate + " SortOrder: " + sortOrder + " NewsDesk: "+ newsDesk);
+
+                AsyncHttpClient client = new AsyncHttpClient();
+                String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+
+                RequestParams params = new RequestParams();
+                params.put("api-key","6884b987f1cd46c0a7bb0c86f628f61a");
+                params.put("begin_date", beginDate);
+                params.put("fq", newsDesk);
+                params.put("sort", sortOrder);
+
+                client.get(url, params, new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("DEBUG", "Response filter: " + response.toString());
+                        JSONArray articleJsonResults = null;
+
+                        try{
+                            articleJsonResults = response.getJSONObject("response").getJSONArray("docs");
+                            articleArrayAdapter.clear();
+                            articleArrayAdapter.addAll(Article.fromJsonArray(articleJsonResults));
+                            Log.d("DEBUG", articles.toString());
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Log.d("DEBUG", "Response filter: " + errorResponse.toString());
+                    }
+                });
+            }
+        }
     }
 }

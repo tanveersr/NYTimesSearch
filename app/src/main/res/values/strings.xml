@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="search_textbox_hint">Enter search query...</string>
     <string name="search_button_label">Search</string>
+    <string name="filter_menu_label">Filter</string>
+    <string name="begin_date">Begin Date</string>
+    <string name="sort_order">Sort Order</string>
+    <string name="filter">Filter</string>
+    <string name="sports">Sports</string>
+    <string name="fashion_and_style">Fashion and Style</string>
+    <string name="arts">Arts</string>
 </resources>
