@@ -1,5 +1,6 @@
-package com.trandhawa.nytimessearch;
+package com.trandhawa.nytimessearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -17,6 +19,9 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.trandhawa.nytimessearch.Article;
+import com.trandhawa.nytimessearch.ArticleArrayAdapter;
+import com.trandhawa.nytimessearch.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +58,22 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         articleArrayAdapter = new ArticleArrayAdapter(this, articles);
         gdResults.setAdapter(articleArrayAdapter);
+
+        // hook up listener for grid click
+        gdResults.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // create an intent to display the article
+                Intent articleIntent = new Intent(getApplicationContext(), ArticleActivity.class);
+                // get the article display
+                Article article = articles.get(i);
+                // pass in the article into intent
+                articleIntent.putExtra("article", article);
+                // launch the activity
+                startActivity(articleIntent);
+            }
+        });
     }
 
     @Override
